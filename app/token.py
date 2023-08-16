@@ -1,6 +1,6 @@
 from datetime import timedelta ,datetime
 from jose import JWTError, jwt
-from schemas import TokenData
+from app.schemas import TokenData
 
 
 
