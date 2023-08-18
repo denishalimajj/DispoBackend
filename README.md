@@ -1,60 +1,75 @@
 # DispoBackend
 
-Backend Setup and Installation Guide
+Dipso Backend Setup
 
-Welcome to the Backend Setup and Installation Guide! This comprehensive guide will assist you in setting up and launching the backend of your application. We'll guide you through essential steps, including tool installation, dependency management, and configuration, ensuring a seamless setup process.
-
-Table of Contents
-
-1. Introduction
-2. Prerequisites
-3. Installation
-4. Configuration
-5. Starting the Backend
-6. Accessing the API Documentation
-7. Troubleshooting
-8. Conclusion
-
-Introduction
-
-This guide provides detailed instructions for setting up the backend of your application. By following these steps, you'll be able to initialize the backend, manage dependencies, and access the API documentation.
+This README provides step-by-step instructions on how to install and start the Dipso backend using Docker Compose.
 
 Prerequisites
 
-Before you begin, ensure that you have the following prerequisites installed on your system:
-Python and pip: Install Python and pip by following the instructions on the https://www.python.org/downloads/
+Docker and Docker Compose should be installed on your system. You can download and install them from the official Docker website: 
+		
+  	Get Docker : https://www.docker.com/get-started/
 
-Installation
+Getting Started
 
-1. Clone the Repository: Start by cloning the repository to your local machine using the following command:
-		git clone https://github.com/denishalimajj/DispoBackend.git
-2. Navigate to the Directory: Move into the project's root directory:
-	cd DispoBackend
+Clone the Repository:
 
-3. Install Dependencies: Use pip to install the required Python dependencies from the requirements.txt file:
-	pip3 install -r requirements.txt
-Configuration
+Clone the Dipso repository to your local machine:
 
+ 	git clone https://github.com/your-username/dipso.git
 
-The backend might require configuration based on your specific project needs. Ensure to:
-1. Environment Variables: If necessary, set up environment variables to store sensitive data such as API keys or database credentials.
-2. Configuration Files: Check if there are any configuration files (e.g., .env) that you need to customize for your environment.
+	cd dipso
 
 
-Starting the Backend
+Environment Variables:
 
-To start the backend server, execute the following command:
-	uvicorn app.main:app –reload
-This command utilizes Uvicorn to launch the application. The --reload flag enables auto-reloading upon code changes, which is beneficial during development.
+Create a .env file in the root directory of the project and set the required environment variables. Replace the placeholders with actual values:
 
-Accessing the API Documentation
+	DB_USER=your_db_username
 
-After successfully starting the application, open your web browser and navigate to http://localhost:8000/docs. This URL provides access to the automatically generated API documentation. You can explore and interact with the API endpoints using this interface.
+	DB_PASSWORD=your_db_password
+
+	DB_NAME=your_db_name
+
+	PGADMIN_EMAIL=your_pgadmin_email
+
+	PGADMIN_PASSWORD=your_pgadmin_password
+
+Build and Start the Backend:
+
+Run the following command to build and start the backend services defined in the docker-compose.yml file:
+
+	docker-compose up -d
+
+This will create and start the PostgreSQL database, PgAdmin interface, and the Dipso application.
+
+Access the Application:
+
+Dipso API: The Dipso API should be accessible at:  
+
+	http://localhost:8000
+
+PgAdmin Interface: You can access the PgAdmin web interface at 
+
+	http://localhost:5050 
+ 
+Use the credentials you provided in the .env file.
+
+Stopping the Services:
+
+To stop the services, run the following command:
+
+	docker-compose down
+
+This will stop and remove the containers while preserving your data.
 
 Troubleshooting
 
-Error Messages: If you encounter any errors during installation or startup, carefully read the error messages. They often contain valuable information about the issue.
-Configuration Issues: If the server fails to start, double-check your configurations and ensure environment variables are set correctly.
+If you encounter any issues during setup, please check the Docker Compose logs for any error messages:
+
+	docker-compose logs
+
+If you need further assistance, please refer to the official Docker documentation or seek help from the Dipso community.
 
 Conclusion
 
