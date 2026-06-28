@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.oauth2 import get_current_user
@@ -10,10 +11,44 @@ router = APIRouter(
     tags=['Users']
 )
 
-@router.post('/', response_model=schemas.UserBase)
-def create_user(request:schemas.User,db: Session = Depends(database.get_db)):
+
+@router.post('/', response_model=schemas.ShowUser)
+def create_user(request: schemas.User, db: Session = Depends(database.get_db)):
     return user.create(request, db)
 
-@router.get('/{id}', response_model= schemas.ShowUser)
-def get_user(id: int, db: Session = Depends(database.get_db),get_current_user: schemas.User = Depends(get_current_user)):
+
+@router.get('/', response_model=List[schemas.ShowUser])
+def list_users(
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
+    return user.get_all(db)
+
+
+@router.get('/{id}', response_model=schemas.ShowUser)
+def get_user(
+    id: int,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
     return user.show_user(id, db)
+
+
+@router.patch('/{id}', response_model=schemas.ShowUser)
+def update_user(
+    id: int,
+    request: schemas.UpdateUser,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
+    return user.update(id, request, db)
+
+
+@router.delete('/{id}', status_code=204)
+def delete_user(
+    id: int,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
+    user.delete(id, db)
+    return None
