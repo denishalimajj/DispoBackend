@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import List, Literal, Optional
 from pydantic import BaseModel, model_validator
 
@@ -120,6 +120,8 @@ class Contract(BaseModel):
     item_type: Optional[str] = None
     price: Optional[str] = None
     comment: Optional[str] = None
+    driver_id: Optional[int] = None
+    driver_name: Optional[str] = None
 
     @model_validator(mode="after")
     def unloading_date_not_before_loading(self):
@@ -143,6 +145,8 @@ class ContractData(BaseModel):
     item_type: Optional[str] = None
     price: Optional[str] = None
     comment: Optional[str] = None
+    driver_id: Optional[int] = None
+    driver_name: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -162,6 +166,8 @@ class UpdateContract(BaseModel):
     item_type: Optional[str] = None
     price: Optional[str] = None
     comment: Optional[str] = None
+    driver_id: Optional[int] = None
+    driver_name: Optional[str] = None
 
     @model_validator(mode="after")
     def unloading_date_not_before_loading(self):
@@ -169,3 +175,111 @@ class UpdateContract(BaseModel):
             if self.unloading_date < self.loading_date:
                 raise ValueError("Unloading date cannot be before loading date.")
         return self
+
+
+# ── Client ──────────────────────────────────────────────────────────────────
+
+class CreateClient(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ShowClient(BaseModel):
+    id: int
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class UpdateClient(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+
+# ── Carrier ──────────────────────────────────────────────────────────────────
+
+class CreateCarrier(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    vat_number: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ShowCarrier(BaseModel):
+    id: int
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    vat_number: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class UpdateCarrier(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    vat_number: Optional[str] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+
+
+# ── Driver ───────────────────────────────────────────────────────────────────
+
+class CreateDriver(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    license_number: Optional[str] = None
+
+
+class ShowDriver(BaseModel):
+    id: int
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    license_number: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class UpdateDriver(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    license_number: Optional[str] = None
+
+
+# ── Contract Events ──────────────────────────────────────────────────────────
+
+class CreateContractEvent(BaseModel):
+    status: str
+    note: Optional[str] = None
+
+
+class ShowContractEvent(BaseModel):
+    id: int
+    contract_id: int
+    status: str
+    note: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

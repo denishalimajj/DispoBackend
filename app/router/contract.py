@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query
 
 from app.oauth2 import get_current_user
 from .. import database, schemas
-from app.repository import contract
+from app.repository import contract, contract_event
 from sqlalchemy.orm import Session
 
 router = APIRouter(
@@ -60,3 +60,22 @@ def delete_contract(
 ):
     contract.delete(contract_id, db)
     return None
+
+
+@router.get("/{contract_id}/events", response_model=List[schemas.ShowContractEvent])
+def list_events(
+    contract_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
+    return contract_event.list_by_contract(contract_id, db)
+
+
+@router.post("/{contract_id}/events", response_model=schemas.ShowContractEvent)
+def add_event(
+    contract_id: int,
+    request: schemas.CreateContractEvent,
+    db: Session = Depends(database.get_db),
+    current_user: schemas.UserBase = Depends(get_current_user),
+):
+    return contract_event.create(contract_id, request, db)

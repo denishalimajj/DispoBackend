@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from . import models
 from app.database import  engine
-from .router import authentication, user, vehicle, contract
+from .router import authentication, user, vehicle, contract, client, carrier, driver
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -27,4 +27,7 @@ app.include_router(authentication.router)
 app.include_router(user.router)
 app.include_router(vehicle.router)
 app.include_router(contract.router)
+app.include_router(client.router)
+app.include_router(carrier.router)
+app.include_router(driver.router)
 

@@ -1,5 +1,5 @@
-from datetime import date as date_type
-from sqlalchemy import Column, Integer, String, Date, Text, Float
+from datetime import date as date_type, datetime
+from sqlalchemy import Column, Integer, String, Date, DateTime, Text, Float
 from app.database import Base
 
 # Contract status values (validated in schemas)
@@ -68,3 +68,48 @@ class Contract(Base):
     item_type = Column(String(255), nullable=True)
     price = Column(String(50), nullable=True)
     comment = Column(Text, nullable=True)
+    driver_id = Column(Integer, nullable=True)
+    driver_name = Column(String(255), nullable=True)
+
+
+class Client(Base):
+    __tablename__ = 'clients'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=True)
+    phone = Column(String(50), nullable=True)
+    address = Column(String(500), nullable=True)
+    notes = Column(Text, nullable=True)
+
+
+class Carrier(Base):
+    __tablename__ = 'carriers'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=True)
+    phone = Column(String(50), nullable=True)
+    vat_number = Column(String(100), nullable=True)
+    address = Column(String(500), nullable=True)
+    notes = Column(Text, nullable=True)
+
+
+class Driver(Base):
+    __tablename__ = 'drivers'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=True)
+    phone = Column(String(50), nullable=True)
+    license_number = Column(String(100), nullable=True)
+
+
+class ContractEvent(Base):
+    __tablename__ = 'contract_events'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contract_id = Column(Integer, nullable=False, index=True)
+    status = Column(String(100), nullable=False)
+    note = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

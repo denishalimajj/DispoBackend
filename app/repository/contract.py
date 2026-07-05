@@ -52,6 +52,8 @@ def create(request: schemas.Contract, db: Session):
         item_type=request.item_type,
         price=request.price,
         comment=request.comment,
+        driver_id=request.driver_id,
+        driver_name=request.driver_name,
     )
     db.add(new_contract)
     db.commit()
@@ -106,6 +108,10 @@ def update(contract_id: int, request: schemas.UpdateContract, db: Session):
         contract.price = request.price
     if request.comment is not None:
         contract.comment = request.comment
+    if request.driver_id is not None:
+        contract.driver_id = request.driver_id
+    if request.driver_name is not None:
+        contract.driver_name = request.driver_name
     if contract.unloading_date < contract.loading_date:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=MSG_UNLOADING_BEFORE_LOADING)
     db.commit()
